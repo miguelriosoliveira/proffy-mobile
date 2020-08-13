@@ -1,22 +1,70 @@
 import React from 'react';
+import { Platform } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import GiveClasses from '../pages/GiveClasses';
-import Landing from '../pages/Landing';
+import Favorites from '../pages/Favorites';
+import TeacherList from '../pages/TeacherList';
 
-const { Navigator, Screen } = createStackNavigator();
+const { Navigator, Screen } = createBottomTabNavigator();
 
-const AppStack: React.FC = () => {
+const StudyTabs: React.FC = () => {
 	return (
-		<NavigationContainer>
-			<Navigator screenOptions={{ headerShown: false }}>
-				<Screen name="Landing" component={Landing} />
-				<Screen name="GiveClasses" component={GiveClasses} />
-			</Navigator>
-		</NavigationContainer>
+		<Navigator
+			tabBarOptions={{
+				style: {
+					elevation: 0,
+					shadowOpacity: 0,
+					height: Platform.OS === 'ios' ? 84 : 64,
+				},
+				tabStyle: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					justifyContent: 'center',
+					paddingBottom: Platform.OS === 'ios' ? 20 : 0,
+				},
+				safeAreaInsets: {
+					bottom: 0,
+				},
+				iconStyle: {
+					flex: 0,
+					width: 20,
+					height: Platform.OS === 'ios' ? 24 : 20,
+				},
+				labelStyle: {
+					fontFamily: 'Archivo_700Bold',
+					fontSize: 13,
+					marginLeft: 16,
+				},
+				inactiveBackgroundColor: '#fafafc',
+				inactiveTintColor: '#c1bccc',
+				activeBackgroundColor: '#ebebf5',
+				activeTintColor: '#32264d',
+			}}
+		>
+			<Screen
+				name="TeacherList"
+				component={TeacherList}
+				options={{
+					tabBarLabel: 'Proffys',
+					tabBarIcon: ({ color, size, focused }) => (
+						<Ionicons name="ios-easel" color={focused ? '#8257e5' : color} size={size} />
+					),
+				}}
+			/>
+			<Screen
+				name="Favorites"
+				component={Favorites}
+				options={{
+					tabBarLabel: 'Favoritos',
+					tabBarIcon: ({ color, size, focused }) => (
+						<Ionicons name="ios-heart-empty" color={focused ? '#8257e5' : color} size={size} />
+					),
+				}}
+			/>
+		</Navigator>
 	);
 };
 
-export default AppStack;
+export default StudyTabs;
